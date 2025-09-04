@@ -19,7 +19,9 @@ import { markedHighlight } from 'marked-highlight' // 官方插件
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 
-// 1. 注册高亮插件
+
+
+// 注册高亮插件
 marked.use(
   markedHighlight({
     // 高亮函数
@@ -128,6 +130,7 @@ const renderMenuIcon = (option: MenuOption) =>
 
 <style scoped>
 @import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css");
+
 
 .tips {
   margin-top: 40px;
