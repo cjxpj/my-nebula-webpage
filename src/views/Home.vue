@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import Footer from '@/components/Footer.vue';
-import HomeMain from "@/components/home/Main.vue";
-import { NCard } from 'naive-ui';
+import Main from "@/components/home/Main.vue";
 </script>
 
 <template>
-
-  <n-card :bordered="false">
-    <template #cover>
-      <HomeMain />
-    </template>
-  </n-card>
+  <Main></Main>
   <Footer></Footer>
 </template>

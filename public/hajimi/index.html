@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="./favicon.ico">
+    <script>
+        ((function () {
+            var callbacks = [], timeLimit = 50, open = false;
+            // setInterval(loop, 1);
+            return {
+                addListener: function (fn) {
+                    callbacks.push(fn);
+                }, cancleListenr: function (fn) {
+                    callbacks = callbacks.filter(function (v) {
+                        return v !== fn;
+                    });
+                }
+            }
+            function loop() {
+                var startTime = new Date();
+                debugger;
+                if (new Date() - startTime > timeLimit) {
+                    if (!open) {
+                        callbacks.forEach(function (fn) {
+                            fn.call(null);
+                        });
+                    }
+                    open = true;
+                    document.body.innerHTML = "";
+                    window.stop();
+                } else {
+                    open = false;
+                }
+            }
+        })()).addListener(function () {
+            window.location.reload();
+        });
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哈基密翻译器</title>
+    <meta name="description" content="哈基米加密器，一个能将普通文本加密为哈基米的工具。">
+    <meta name="keywords" content="哈基密,哈基米加密器,哈基密曼波,哈基米语">
+</head>
+
+<body>
+    <noscript>
+        <strong>请打开JavaScript执行权限</strong>
+    </noscript>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

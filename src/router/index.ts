@@ -6,7 +6,11 @@ const routes = [
     name: 'Home',
     component: () => import('@/views/Home.vue'),
   },
-  // 其他路由 …
+  {
+    path: '/hajimi',
+    name: 'hajimi',
+    component: () => import('@/views/tool/hajimi.vue'),
+  },
 ]
 
 const router = createRouter({

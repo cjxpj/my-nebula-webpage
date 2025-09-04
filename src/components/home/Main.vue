@@ -6,82 +6,33 @@ import {
   NLayoutSider,
   NMenu,
   NLayout,
-  NCard,
   NFlex,
   NButton,
 } from 'naive-ui'
 import { BeerOutline } from '@vicons/ionicons5'
-import myimg from '@/assets/myimg.jpg'
-import { h, ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { marked } from 'marked'
-import { markedHighlight } from 'marked-highlight' // 官方插件
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
-
-
-
-// 注册高亮插件
-marked.use(
-  markedHighlight({
-    // 高亮函数
-    highlight(code: string, lang: string) {
-      const language = hljs.getLanguage(lang) ? lang : 'plaintext'
-      return hljs.highlight(code, { language }).value
-    },
-    // 生成的 <code> 上 class 前缀
-    langPrefix: 'hljs language-'
-  })
-)
-
-
-// 把 .md 当原始文本
-const modules = import.meta.glob<string>(
-  '/src/doc/*.md',
-  { query: '?raw', import: 'default' }
-)
-
-
-const menuOptions: MenuOption[] = Object.keys(modules).map((path) => {
-  const name = path.replace('/src/doc/', '').replace('.md', '')
-  return {
-    label: name,
-    key: name,
-    href: `/?doc=${encodeURIComponent(name)}`,
+import myimg from '@/assets/images/myimg.jpg'
+import { h } from 'vue'
+import { RouterLink } from 'vue-router'
+import hajimi from '@/assets/images/hajimi.jpg'
+const menuOptions: MenuOption[] = [
+  {
+    label: "哈基密语言",
+    key: "hajimi",
+    img: "hajimi",
   }
-})
+];
 
-// 读取文档内容
-const content = ref('')
-
-onMounted(async () => {
-  try {
-    const name = useRoute().query.doc as string
-    if (!name) return
-
-    const loader = modules[`/src/doc/${name}.md`]
-    if (!loader) return
-
-    const txt = await loader()
-    content.value = marked(txt).toString()
-  } catch (err) {
-    console.error('加载文档失败：', err)  // 关键行
-  }
-})
-
-// 点击触发后检测跳转
+// 点击触发后检测跳转,不存在使用router
 const jump = (option: MenuOption) =>
   'href' in option
     ? h('a', { href: option.href }, option.label as string)
-    : (option.label as string)
+    : h(RouterLink, { to: option.key as string }, () => option.label)
 
 // 渲染图标
 const renderMenuIcon = (option: MenuOption) =>
-  option.key === 'sheep-man'
-    ? true
-    : option.key === 'food'
-      ? null
-      : h(NIcon, null, { default: () => h(BeerOutline) })
+  option.img === "hajimi"
+    ? h(NAvatar, { round: true, size: "small", src: hajimi })
+    : h(NIcon, null, { default: () => h(BeerOutline) })
 </script>
 
 <template>
@@ -92,35 +43,19 @@ const renderMenuIcon = (option: MenuOption) =>
     </n-layout-sider>
 
     <n-layout>
-      <!-- 有文档时渲染内容 -->
-      <div v-if="content" class="layout-doc markdown-body" v-html="content"></div>
-
-      <!-- 无文档时渲染默认占位 -->
-      <div v-else class="layout-content">
+      <div class="layout-content">
         <div class="avatar-body">
           <div class="myimg-body">
             <n-avatar round :size="180" :src="myimg" class="myimg" />
           </div>
         </div>
         <n-flex justify="center" class="tips">
-          Ciallo～(∠・ω ＜)⌒☆
+          Ciallo～(∠・ω ＜)⌒<span class="stars">☆</span>
         </n-flex>
 
         <n-flex justify="center" class="item">
-          <n-button text tag="a" href="https://www.baidu.com" target="_blank" type="primary">
-            <n-card hoverable>
-              百度
-            </n-card>
-          </n-button>
-          <n-button text tag="a" href="https://www.baidu.com" target="_blank" type="primary">
-            <n-card hoverable>
-              百度
-            </n-card>
-          </n-button>
-          <n-button text tag="a" href="https://www.baidu.com" target="_blank" type="primary">
-            <n-card hoverable>
-              百度
-            </n-card>
+          <n-button round color="#ff7a45" tag="a" href="https://www.baidu.com" target="_blank">
+            百度
           </n-button>
         </n-flex>
       </div>
@@ -131,6 +66,24 @@ const renderMenuIcon = (option: MenuOption) =>
 <style scoped>
 @import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css");
 
+/* 上下浮动 */
+.stars {
+  animation: stars 3s linear infinite;
+}
+
+@keyframes stars {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
 
 .tips {
   margin-top: 40px;
@@ -143,17 +96,13 @@ const renderMenuIcon = (option: MenuOption) =>
   background: linear-gradient(to right, white, pink);
 }
 
-.item .n-card {
+.item .n-button {
   margin: 0 50px;
   margin-top: 50px;
   min-width: 186px;
-  width: 20%;
-  background-color: transparent;
+  height: 60px;
+  width: 15%;
   text-align: center;
-}
-
-.layout-doc {
-  height: 100vh;
 }
 
 .layout-content {
