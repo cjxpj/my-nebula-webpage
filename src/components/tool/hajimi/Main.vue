@@ -15,15 +15,33 @@ onMounted(async () => {
   wasm = await initWasm();
 });
 
-function doEncrypt(txt: string) {
+const doEncrypt = (txt: string) => {
   if (!wasm) return;
   result.value = wasm.encrypt(key, txt);
-}
+};
 
-function doDecrypt(txt: string) {
+const doDecrypt = (txt: string) => {
   if (!wasm) return;
   text.value = wasm.decrypt(key, txt);
 }
+
+
+// 统一rows
+const allRows = (() => {
+  // 匹配电脑手机
+  const isMobile = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+  if (isMobile) {
+    return {
+      minRows: 10,
+      maxRows: 10,
+    }
+  } else {
+    return {
+      minRows: 20,
+      maxRows: 20,
+    }
+  }
+})();
 </script>
 
 <template>
@@ -36,16 +54,12 @@ function doDecrypt(txt: string) {
         <n-flex align="center" style="height: 100%;">
           <n-flex justify="space-around" style="width: 100%;">
             <div class="inputtext">
-              <n-input placeholder="输入内容" type="textarea" :autosize="{
-                minRows: 25,
-                maxRows: 25
-              }" @input="doEncrypt" v-model:value="text" />
+              <n-input placeholder="输入内容" type="textarea" :autosize="allRows" size="small" show-count @input="doEncrypt"
+                v-model:value="text" />
             </div>
             <div class="inputtext">
-              <n-input placeholder="翻译内容" type="textarea" :autosize="{
-                minRows: 25,
-                maxRows: 25
-              }" @input="doDecrypt" v-model:value="result" />
+              <n-input placeholder="翻译内容" type="textarea" :autosize="allRows" show-count @input="doDecrypt"
+                v-model:value="result" />
             </div>
           </n-flex>
         </n-flex>
@@ -60,12 +74,9 @@ function doDecrypt(txt: string) {
   min-width: 270px;
 }
 
-.inputtext n-input {
-  height: 100%;
-}
-
 .container {
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   background-color: #f0f2f5;
 }
 
