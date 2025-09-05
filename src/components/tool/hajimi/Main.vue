@@ -17,12 +17,14 @@ onMounted(async () => {
 
 const doEncrypt = (txt: string) => {
   if (!wasm) return;
-  result.value = wasm.encrypt(key, txt);
+  const t = wasm.encrypt(key, txt);
+  if (typeof t !== "object") result.value = t;
 };
 
 const doDecrypt = (txt: string) => {
   if (!wasm) return;
-  text.value = wasm.decrypt(key, txt);
+  const t = wasm.decrypt(key, txt);
+  if (typeof t !== "object") text.value = t;
 }
 
 
