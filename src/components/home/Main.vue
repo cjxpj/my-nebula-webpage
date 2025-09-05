@@ -14,11 +14,17 @@ import myimg from '@/assets/images/myimg.jpg'
 import { h } from 'vue'
 import { RouterLink } from 'vue-router'
 import hajimi from '@/assets/images/hajimi.jpg'
+import hbz from '@/assets/images/hbz.png'
 const menuOptions: MenuOption[] = [
   {
     label: "哈基密语言",
     key: "hajimi",
     img: "hajimi",
+  },
+  {
+    label: "黑白照",
+    key: "reset-image",
+    img: "hbz",
   }
 ];
 
@@ -32,7 +38,9 @@ const jump = (option: MenuOption) =>
 const renderMenuIcon = (option: MenuOption) =>
   option.img === "hajimi"
     ? h(NAvatar, { round: true, size: "small", src: hajimi })
-    : h(NIcon, null, { default: () => h(BeerOutline) })
+    : option.img === "hbz"
+      ? h(NAvatar, { round: true, size: "small", src: hbz })
+      : h(NIcon, null, { default: () => h(BeerOutline) })
 </script>
 
 <template>

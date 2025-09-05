@@ -1,4 +1,3 @@
-// src/router/index.ts
 import { createRouter, createWebHashHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 import faviconHajimi from '@/assets/images/favicon-hajimi.ico';
@@ -8,6 +7,11 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'home',
     component: () => import('@/views/Home.vue'),
+  },
+  {
+    path: '/reset-image',
+    name: '404',
+    component: () => import('@/views/tool/image.vue'),
   },
   {
     path: '/hajimi',
